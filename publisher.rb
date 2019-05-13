@@ -1,15 +1,22 @@
 require 'rubygems'
 require 'bunny'
+require 'benchmark'
 
-conn = Bunny.new
-conn.start
+puts Benchmark.measure {
+  conn = Bunny.new
+  conn.start
 
-ch = conn.create_channel
-exchange = ch.topic('analysis', durable: true)
+  ch = conn.create_channel
+  exchange = ch.topic('analysis', durable: true)
 
-100.times do
-  exchange.publish('ok', routing_key: 'analysis')
-end
+  exchange.publish('start', routing_key: 'analysis')
 
-ch.close
-conn.close
+  10000.times do
+    exchange.publish('ok', routing_key: 'analysis')
+  end
+
+  exchange.publish('end', routing_key: 'analysis')
+
+  ch.close
+  conn.close
+}

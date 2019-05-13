@@ -9,6 +9,6 @@ Sneakers.configure(
   ),
   threads: (ENV['SNEAKERS_POOL_SIZE'] || 1).to_i,
   prefetch: (ENV['SNEAKERS_POOL_SIZE'] || 1).to_i,
-  workers: 1
+  workers: 1,
 )
 Sneakers.logger.level = Logger::INFO
